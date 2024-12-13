@@ -1,7 +1,6 @@
 export interface DadJokeResponse {
-    id: string;
     attachments: attachment[];
-    status: number;
+   
 }
 interface attachment {
     fallback: string

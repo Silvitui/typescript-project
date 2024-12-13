@@ -14,22 +14,22 @@ let reportJokes: JokeVote[] = [];
 
 const getRandomJoke = async (): Promise<void> => {
     try {
-      const jokes = [getDadJoke, getChuckNorrisJoke];
-      const randomIndex = Math.floor(Math.random() * jokes.length); 
-      currentJoke = await jokes[randomIndex](); 
-      if (domShowJoke) {
-        domShowJoke.textContent = currentJoke;
-      }
+        const jokes = [getDadJoke, getChuckNorrisJoke];
+        const randomIndex = Math.floor(Math.random() * jokes.length);
+        currentJoke = await jokes[randomIndex]();
+        if (domShowJoke) {
+            domShowJoke.textContent = currentJoke;
+        }
     } catch (error) {
-      console.error(error);
-      if (domShowJoke) {
-        domShowJoke.textContent = "Ups! There was an error loading the joke";
-      }
+        console.error(error);
+        if (domShowJoke) {
+            domShowJoke.textContent = "Ups! There was an error loading the joke";
+        }
     }
-  };
-  
+};
 
-const voteJoke = (score: number): void => {
+
+const voteJoke =async (score: number): Promise<void> => {
     const index = reportJokes.findIndex(report => report.joke === currentJoke);
 
     if (index !== -1) {
@@ -50,38 +50,38 @@ const voteJoke = (score: number): void => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const weatherEl = document.getElementById('weather-section');
-    if(weatherEl){
-    const apiKey = "F6N1YLJq7T3UiyjO"; 
-    const latitude = 41.3888; 
-    const longitude = 2.159; 
+    if (weatherEl) {
+        const apiKey = "F6N1YLJq7T3UiyjO";
+        const latitude = 41.3888;
+        const longitude = 2.159;
 
-    fetchWeather(latitude, longitude, apiKey)
-        .then((data) => {
-            if (data) {
-                let temperatureText = ''
-                let precipitationText = ''
-                console.log(`Temperatura actual: ${data.data_day.temperature_mean[0]}°C`);
-                if(data.data_day.temperature_mean[0]< 15){
-                    temperatureText = `🥶Actual temp: ${data.data_day.temperature_mean[0]}°C `;
-                } else if (data.data_day.temperature_mean[0]>= 15 && data.data_day.temperature_mean[0]<= 20){
-                    temperatureText =  `🙂🌤Actual temp: ${data.data_day.temperature_mean[0]}°C `
-                } else {
-                    temperatureText = `🌞Actual temp: ${data.data_day.temperature_mean[0]}°C `
+        fetchWeather(latitude, longitude, apiKey)
+            .then((data) => {
+                if (data) {
+                    let temperatureText = ''
+                    let precipitationText = ''
+                    console.log(`Temperatura actual: ${data.data_day.temperature_mean[0]}°C`);
+                    if (data.data_day.temperature_mean[0] < 15) {
+                        temperatureText = `🥶Actual temp: ${data.data_day.temperature_mean[0]}°C `;
+                    } else if (data.data_day.temperature_mean[0] >= 15 && data.data_day.temperature_mean[0] <= 20) {
+                        temperatureText = `🙂🌤Actual temp: ${data.data_day.temperature_mean[0]}°C `
+                    } else {
+                        temperatureText = `🌞Actual temp: ${data.data_day.temperature_mean[0]}°C `
+                    }
+                    if (data.data_day.precipitation_probability[0] <= 30) {
+                        precipitationText = `☔ Precipitation: ${data.data_day.precipitation_probability[0]} %`;
+                    } else if (data.data_day.precipitation_probability[0] > 30 && data.data_day.precipitation_probability[0] <= 60) {
+                        precipitationText = ` ☔Precipitation: ${data.data_day.precipitation_probability[0]} %`
+                    } else {
+                        precipitationText = `☔ Precipitation: ${data.data_day.precipitation_probability[0]} %`
+                    }
+                    weatherEl.textContent = temperatureText + precipitationText
                 }
-                if(data.data_day.precipitation_probability[0]<= 30){
-                    precipitationText = `☔ Precipitation: ${data.data_day.precipitation_probability[0]} %`;
-                } else if (data.data_day.precipitation_probability[0]> 30 && data.data_day.precipitation_probability[0]<= 60){
-                    precipitationText =  ` ☔Precipitation: ${data.data_day.precipitation_probability[0]} %`
-                } else {
-                    precipitationText = `☔ Precipitation: ${data.data_day.precipitation_probability[0]} %`
-                }
-                weatherEl.textContent = temperatureText + precipitationText
-            }
-        })
-        .catch((error) => {
-            console.error(error)
-            weatherEl.textContent = 'Error cargando datos meteorológicos';
-        })
+            })
+            .catch((error) => {
+                console.error(error)
+                weatherEl.textContent = 'Error cargando datos meteorológicos';
+            })
     }
     getRandomJoke();
 
