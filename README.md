@@ -37,6 +37,10 @@ Ensure you have the following installed:
    ```bash
    npm install
    ```
+4. Start the project:
+   ```bash
+   npm run build
+   ```
 
 ---
 

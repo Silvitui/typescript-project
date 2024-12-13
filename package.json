@@ -5,14 +5,13 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ts": "tsc",                                
-    "build:sass": "sass src/sass:dist/css",            
+    "build:ts": "tsc",
+    "build:sass": "sass src/sass:dist/css",
     "build": "npm run build:ts && npm run build:sass",
-    "watch:ts": "tsc -w",                              
-    "watch:sass": "sass --watch src/sass:dist/css",    
-    "dev": "npm run watch:ts && npm run watch:sass",   
-    "start": "node dist/index.js"      
-
+    "watch:ts": "tsc -w",
+    "watch:sass": "sass --watch src/sass:dist/css",
+    "dev": "npm run watch:ts && npm run watch:sass",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
