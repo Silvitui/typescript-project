@@ -1,0 +1,57 @@
+
+$font-family: "Palatino Linotype", "Book Antiqua", serif;
+$principal: #B7D3C6;
+$secondary: #FFF59E;
+
+body {
+    font-family: $font-family;
+    background-color: $secondary;
+}
+.score-button {
+    cursor: pointer;
+    margin: 1rem;
+    border-radius: 40rem;
+    border: solid #222;
+    &:hover {
+        transform: scale(1.2);
+        border-color: $principal;
+        background-color: $secondary;
+    }
+}
+
+.navbar {
+    background-color: $principal;
+}
+
+
+.card {
+    background-position: center;
+    border-radius: 100px;
+    box-shadow: 30px 30px 30px  #222;
+    max-width: 60%;
+    margin: 1.55em auto;
+    margin-top: 12.5em;
+}
+
+.btn-dark {
+    background-color: $principal;
+    color:#222;
+    font-size: 16px;
+    border: 2px solid black;
+    padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    border-radius: 2em;
+    cursor: pointer;
+    transition: background-color, 0.3s, transform 0.3s;
+    
+
+    &:hover {
+        border: 2px solid;
+        background-color: #ebe47d7a;
+        color:#222
+        
+        
+        
+    }
+}

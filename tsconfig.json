@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2016",                /* JavaScript moderno */
+    "module": "Node16",                /* Genera ES Modules */
+    "moduleResolution": "node16",
+    "outDir": "./dist",                /* Carpeta de salida */
+    "esModuleInterop": true,           /* Interoperabilidad con CommonJS */
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
