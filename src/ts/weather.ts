@@ -17,7 +17,7 @@ import { WeatherResponse } from "./interfaces.js";
       }
   
       const data: WeatherResponse = await response.json();
-      console.log("Datos del clima:", data);
+      // console.log("Datos del clima:", data);
       return data;
     } catch (error) {
       console.error("Error en la llamada a la API de meteoblue:", error);

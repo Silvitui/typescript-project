@@ -13,7 +13,7 @@ export const getDadJoke = async (): Promise<string> => {
     }
 
     const data: DadJokeResponse = await response.json();
-    console.log("Response dad joke :",data)
+    // console.log("Response dad joke :",data)
     const joke = data.attachments[0].text;
     return joke
 

@@ -9,6 +9,11 @@ const score1Btn = document.getElementById("score1") as HTMLButtonElement;
 const score2Btn = document.getElementById("score2") as HTMLButtonElement;
 const score3Btn = document.getElementById("score3") as HTMLButtonElement;
 
+if (!domShowJoke || !nextJokeBtn || !score1Btn || !score2Btn || !score3Btn) {
+    console.error("Missing Dom elements")
+    throw new Error("Missing Dom elements")
+}
+
 let currentJoke: string = '';
 let reportJokes: JokeVote[] = [];
 
@@ -17,19 +22,16 @@ const getRandomJoke = async (): Promise<void> => {
         const jokes = [getDadJoke, getChuckNorrisJoke];
         const randomIndex = Math.floor(Math.random() * jokes.length);
         currentJoke = await jokes[randomIndex]();
-        if (domShowJoke) {
-            domShowJoke.textContent = currentJoke;
-        }
+        domShowJoke.textContent = currentJoke;
+
     } catch (error) {
         console.error(error);
-        if (domShowJoke) {
-            domShowJoke.textContent = "Ups! There was an error loading the joke";
-        }
+        domShowJoke.textContent = "Ups! There was an error loading the joke";
     }
 };
 
 
-const voteJoke =async (score: number): Promise<void> => {
+const voteJoke = async (score: number): Promise<void> => {
     const index = reportJokes.findIndex(report => report.joke === currentJoke);
 
     if (index !== -1) {
@@ -42,10 +44,10 @@ const voteJoke =async (score: number): Promise<void> => {
             score: score,
             date: new Date().toISOString()
         };
+        console.log('Joke score:', newVote.score);
         reportJokes.push(newVote);
     }
 
-    console.log('reportJokes:', reportJokes);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -60,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data) {
                     let temperatureText = ''
                     let precipitationText = ''
-                    console.log(`Temperatura actual: ${data.data_day.temperature_mean[0]}°C`);
+                    // console.log(`Temperatura actual: ${data.data_day.temperature_mean[0]}°C`);
                     if (data.data_day.temperature_mean[0] < 15) {
                         temperatureText = `🥶Actual temp: ${data.data_day.temperature_mean[0]}°C `;
                     } else if (data.data_day.temperature_mean[0] >= 15 && data.data_day.temperature_mean[0] <= 20) {
@@ -84,14 +86,12 @@ document.addEventListener("DOMContentLoaded", () => {
             })
     }
     getRandomJoke();
+    nextJokeBtn.addEventListener("click", () => {
+        getRandomJoke();
+    });
 
-    if (nextJokeBtn) {
-        nextJokeBtn.addEventListener("click", () => {
-            getRandomJoke();
-        });
-    }
 
-    if (score1Btn) score1Btn.addEventListener('click', () => voteJoke(1));
-    if (score2Btn) score2Btn.addEventListener('click', () => voteJoke(2));
-    if (score3Btn) score3Btn.addEventListener('click', () => voteJoke(3));
+    score1Btn.addEventListener('click', () => voteJoke(1));
+    score2Btn.addEventListener('click', () => voteJoke(2));
+    score3Btn.addEventListener('click', () => voteJoke(3));
 });

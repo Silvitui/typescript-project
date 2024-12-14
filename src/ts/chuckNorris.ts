@@ -12,6 +12,6 @@ export const getChuckNorrisJoke = async (): Promise<string> => {
     }
 
     const data: ChuckNorrisResponse = await response.json();
-    console.log("Response Chuck Norris:",data)
+    // console.log("Response Chuck Norris:",data)
     return data.value;
 };
