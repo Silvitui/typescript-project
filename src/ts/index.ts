@@ -50,46 +50,65 @@ const voteJoke = async (score: number): Promise<void> => {
 
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    const weatherEl = document.getElementById('weather-section');
-    if (weatherEl) {
-        const apiKey = "F6N1YLJq7T3UiyjO";
-        const latitude = 41.3888;
-        const longitude = 2.159;
+const LATITUDE = 41.3888;
+const LONGITUDE = 2.159;
+const API_KEY = "F6N1YLJq7T3UiyjO";
 
-        fetchWeather(latitude, longitude, apiKey)
-            .then((data) => {
-                if (data) {
-                    let temperatureText = ''
-                    let precipitationText = ''
-                    // console.log(`Temperatura actual: ${data.data_day.temperature_mean[0]}°C`);
-                    if (data.data_day.temperature_mean[0] < 15) {
-                        temperatureText = `🥶Actual temp: ${data.data_day.temperature_mean[0]}°C `;
-                    } else if (data.data_day.temperature_mean[0] >= 15 && data.data_day.temperature_mean[0] <= 20) {
-                        temperatureText = `🙂🌤Actual temp: ${data.data_day.temperature_mean[0]}°C `
-                    } else {
-                        temperatureText = `🌞Actual temp: ${data.data_day.temperature_mean[0]}°C `
-                    }
-                    if (data.data_day.precipitation_probability[0] <= 30) {
-                        precipitationText = `☔ Precipitation: ${data.data_day.precipitation_probability[0]} %`;
-                    } else if (data.data_day.precipitation_probability[0] > 30 && data.data_day.precipitation_probability[0] <= 60) {
-                        precipitationText = ` ☔Precipitation: ${data.data_day.precipitation_probability[0]} %`
-                    } else {
-                        precipitationText = `☔ Precipitation: ${data.data_day.precipitation_probability[0]} %`
-                    }
-                    weatherEl.textContent = temperatureText + precipitationText
-                }
-            })
-            .catch((error) => {
-                console.error(error)
-                weatherEl.textContent = 'Error cargando datos meteorológicos';
-            })
+const getWeather = async (): Promise<void> => {
+    const weatherEl = document.getElementById("weather-section");
+    if (!weatherEl) {
+        console.error("Missing DOM elements.");
+        return;
     }
-    getRandomJoke();
-    nextJokeBtn.addEventListener("click", () => {
-        getRandomJoke();
-    });
 
+    try {
+        const data = await fetchWeather(LATITUDE, LONGITUDE, API_KEY);
+        if (data) {
+            const weatherText = generateWeatherText(data);
+            weatherEl.textContent = weatherText;
+        } else {
+            weatherEl.textContent = "Error loading weather information.";
+        }
+    } catch (error) {
+        console.error("Error loading weather data:", error);
+        weatherEl.textContent = "Error loading weather data.";
+    }
+};
+
+const generateWeatherText = (data: any): string => {
+    let temperatureText = "";
+    let precipitationText = "";
+
+    const temp = data.data_day.temperature_mean[0];
+    const precipitation = data.data_day.precipitation_probability[0];
+
+    if (temp < 15) {
+        temperatureText = `🥶 Actual temp: ${temp}°C `;
+    } else if (temp >= 15 && temp <= 20) {
+        temperatureText = `🙂🌤 Actual temp: ${temp}°C `;
+    } else {
+        temperatureText = `🌞 Actual temp: ${temp}°C `;
+    }
+
+    if (precipitation <= 30) {
+        precipitationText = `☔ Precipitation: ${precipitation}%`;
+    } else if (precipitation > 30 && precipitation <= 60) {
+        precipitationText = `☔ Precipitation: ${precipitation}%`;
+    } else {
+        precipitationText = `☔ Precipitation: ${precipitation}%`;
+    }
+
+    return temperatureText + precipitationText;
+};
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    getWeather(); 
+
+    getRandomJoke(); 
+    nextJokeBtn.addEventListener("click", getRandomJoke);
 
     score1Btn.addEventListener('click', () => voteJoke(1));
     score2Btn.addEventListener('click', () => voteJoke(2));
